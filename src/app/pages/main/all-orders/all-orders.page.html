@@ -1,0 +1,40 @@
+<ion-header collapse="fade" [translucent]="true">
+  <ion-toolbar color="dark">
+    <ion-title color="light">Today's order numbers </ion-title>
+  </ion-toolbar> </ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-row class="center">
+          <ion-text>Verk ID:&nbsp;&nbsp;</ion-text>
+          <ion-input placeholder="Verkoper nummer"></ion-input>
+          <ion-button color="danger">Search</ion-button>
+        </ion-row>
+      </ion-col>
+
+    </ion-row>
+    <ion-row><ion-col><ion-row class="center"><ion-text>Verkoper:&nbsp;&nbsp;</ion-text><ion-input
+            placeholder="Display Verkoper full name"></ion-input></ion-row></ion-col></ion-row>
+  </ion-grid>
+  <ion-content>
+    <ion-grid>
+      <!-- Table Header -->
+      <ion-row class="header-row">
+        <ion-col>Order No</ion-col>
+        <ion-col>Time</ion-col>
+        <ion-col>Qty.</ion-col>
+        <ion-col>Total</ion-col>
+      </ion-row>
+
+      <!-- Table Data -->
+      <ion-row class="data-row">
+        <ion-col>Knv000001982</ion-col>
+        <ion-col>31/01/24</ion-col>
+        <ion-col>2</ion-col>
+        <ion-col>40.00</ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-content>
+</ion-content>

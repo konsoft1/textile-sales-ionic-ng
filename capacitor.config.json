@@ -1,0 +1,7 @@
+{
+	"appId": "com.retail.textile",
+	"appName": "Retail Textile",
+	"webDir": "www",
+	"bundledWebRuntime": false,
+	"ios": { "scheme": "Retail Textile" }
+}
