@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://localhost/MSTextile_Print" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://localhost/MSTextile_Print" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/"
+  xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://localhost/MSTextile_Print"
+  xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+  xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+  targetNamespace="http://localhost/MSTextile_Print" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
     <s:schema elementFormDefault="qualified" targetNamespace="http://localhost/MSTextile_Print">
       <s:element name="GetEmployee">
@@ -38,13 +44,15 @@
       <s:element name="GetEmployeesResponse">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="GetEmployeesResult" type="tns:ArrayOfEmployee" />
+            <s:element minOccurs="0" maxOccurs="1" name="GetEmployeesResult"
+              type="tns:ArrayOfEmployee" />
           </s:sequence>
         </s:complexType>
       </s:element>
       <s:complexType name="ArrayOfEmployee">
         <s:sequence>
-          <s:element minOccurs="0" maxOccurs="unbounded" name="Employee" nillable="true" type="tns:Employee" />
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Employee" nillable="true"
+            type="tns:Employee" />
         </s:sequence>
       </s:complexType>
       <s:element name="GetOrdersForSaleman">
@@ -57,13 +65,15 @@
       <s:element name="GetOrdersForSalemanResponse">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="GetOrdersForSalemanResult" type="tns:ArrayOfOrder" />
+            <s:element minOccurs="0" maxOccurs="1" name="GetOrdersForSalemanResult"
+              type="tns:ArrayOfOrder" />
           </s:sequence>
         </s:complexType>
       </s:element>
       <s:complexType name="ArrayOfOrder">
         <s:sequence>
-          <s:element minOccurs="0" maxOccurs="unbounded" name="Order" nillable="true" type="tns:Order" />
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Order" nillable="true"
+            type="tns:Order" />
         </s:sequence>
       </s:complexType>
       <s:complexType name="Order">
@@ -74,20 +84,21 @@
           <s:element minOccurs="0" maxOccurs="1" name="number" type="s:string" />
           <s:element minOccurs="1" maxOccurs="1" name="total" type="s:decimal" />
           <s:element minOccurs="1" maxOccurs="1" name="dateTime" type="s:string" />
-		  <s:element minOccurs="0" maxOccurs="1" name="printer" type="s:string" />
-		  <s:element minOccurs="0" maxOccurs="1" name="btw_perc" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="printer" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="btw_perc" type="s:string" />
         </s:sequence>
       </s:complexType>
       <s:complexType name="ArrayOfOrderLine">
         <s:sequence>
-          <s:element minOccurs="0" maxOccurs="unbounded" name="OrderLine" nillable="true" type="tns:OrderLine" />
+          <s:element minOccurs="0" maxOccurs="unbounded" name="OrderLine" nillable="true"
+            type="tns:OrderLine" />
         </s:sequence>
       </s:complexType>
       <s:complexType name="OrderLine">
         <s:sequence>
           <s:element minOccurs="0" maxOccurs="1" name="product" type="tns:Product" />
           <s:element minOccurs="1" maxOccurs="1" name="quantity" type="s:decimal" />
-		  <s:element minOccurs="1" maxOccurs="1" name="pieces" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="pieces" type="s:decimal" />
           <s:element minOccurs="1" maxOccurs="1" name="total" type="s:decimal" />
         </s:sequence>
       </s:complexType>
@@ -100,8 +111,8 @@
           <s:element minOccurs="1" maxOccurs="1" name="prijs" type="s:decimal" />
           <s:element minOccurs="1" maxOccurs="1" name="NewPrijs" type="s:decimal" />
           <s:element minOccurs="0" maxOccurs="1" name="AFDE" type="s:string" />
-		  <s:element minOccurs="0" maxOccurs="1" name="BeginDateTime" type="s:string" />
-		  <s:element minOccurs="0" maxOccurs="1" name="EndDateTime" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="BeginDateTime" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EndDateTime" type="s:string" />
         </s:sequence>
       </s:complexType>
       <s:element name="GetOrderLines">
@@ -114,7 +125,8 @@
       <s:element name="GetOrderLinesResponse">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="GetOrderLinesResult" type="tns:ArrayOfOrderLine" />
+            <s:element minOccurs="0" maxOccurs="1" name="GetOrderLinesResult"
+              type="tns:ArrayOfOrderLine" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -419,7 +431,8 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="GetOrdersForSaleman">
-      <soap:operation soapAction="http://localhost/MSTextile_Print/GetOrdersForSaleman" style="document" />
+      <soap:operation soapAction="http://localhost/MSTextile_Print/GetOrdersForSaleman"
+        style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -503,7 +516,8 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="GetOrdersForSaleman">
-      <soap12:operation soapAction="http://localhost/MSTextile_Print/GetOrdersForSaleman" style="document" />
+      <soap12:operation soapAction="http://localhost/MSTextile_Print/GetOrdersForSaleman"
+        style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -539,7 +553,8 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="PrintDublicate">
-      <soap12:operation soapAction="http://localhost/MSTextile_Print/PrintDublicate" style="document" />
+      <soap12:operation soapAction="http://localhost/MSTextile_Print/PrintDublicate"
+        style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

@@ -7,6 +7,7 @@ import { Product, initializeProduct } from 'src/app/models/Product';
 import { Store } from '@ngrx/store';
 import { AlertController, LoadingController, NavController } from '@ionic/angular';
 import { setProduct } from 'src/app/store/production/actions';
+import { ArrayOfOrderLine, initializeOrder, Order, OrderLine } from 'src/app/models/Order';
 
 @Component({
   selector: 'app-dashboard',
@@ -26,8 +27,9 @@ export class DashboardPage implements OnInit, OnDestroy {
   price: string;
   newprice: string;
   quantity: string;
+  printer: string;
   rows: any[];
-  informationEmployee: any;
+  informationEmployee: Employee;
   index: number;
   selectedIndexes: number[];
 
@@ -45,6 +47,7 @@ export class DashboardPage implements OnInit, OnDestroy {
     this.rows = [];
     this.index = 0;
     this.selectedIndexes = [];
+    this.printer = "Printer-1";
     // this.product$ = store.select('product');
   }
 
@@ -63,6 +66,7 @@ export class DashboardPage implements OnInit, OnDestroy {
     setTimeout(() => {
       this.content_loaded = true;
       this.subscription = this.employee$.subscribe((employee) => {
+        this.informationEmployee = employee;
       });
     }, 2000);
   }
@@ -156,14 +160,17 @@ export class DashboardPage implements OnInit, OnDestroy {
   }
 
   handleRowClick(id) {
-    console.log(id);
-    let pos = this.selectedIndexes.indexOf(id);
+    console.log(id)
+      ;
+    let pos = this.selectedIndexes.indexOf(id)
+      ;
     if (pos !== -1) {
       this.selectedIndexes.splice(pos, 1);
       // console.log(pos);
       this.rows[id].class = 'data-row';
     } else {
-      this.selectedIndexes.push(id);
+      this.selectedIndexes.push(id)
+        ;
       this.rows[id].class = 'data-row selected';
     }
     // console.log(this.selectedIndexes);
@@ -207,6 +214,39 @@ export class DashboardPage implements OnInit, OnDestroy {
     console.log(this.rows);
 
     this.selectedIndexes = [];
+  }
+
+  handlePrintClick() {
+    let order: Order = initializeOrder();
+
+    let total = 0;
+    let cnt = 0;
+
+    order.orderLines.OrderLine = this.products.map((product: Product, idx: number): OrderLine => {
+      const orderline: OrderLine = {
+        product: product,
+        quantity: this.rows[idx].quantity,
+        pieces: this.rows[idx].rate,
+        total: this.rows[idx].total,
+      };
+
+      cnt++;
+      total += orderline.total * 1;
+
+      return orderline;
+    });
+    order.employee = this.informationEmployee;
+    //order.barcode = this.artcode;
+    order.number = cnt + '.00';
+    order.total = total;
+    order.dateTime = new Date().toISOString();
+    order.printer = this.printer;
+
+    this.dataService.testPrint(order).subscribe(data => {
+      console.log('print data: ', data);
+    }, (error) => {
+      console.log('print error: ', error);
+    });
   }
 
 }

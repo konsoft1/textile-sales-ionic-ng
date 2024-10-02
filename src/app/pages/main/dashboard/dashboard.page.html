@@ -21,13 +21,8 @@
         <ion-button id="scan-btn" shape="round" color="danger" (click)="handleScanClick($event)">SCAN</ion-button>
       </ion-col>
     </ion-row>
-    <ion-row
-      ><ion-col
-        ><ion-row class="center"
-          ><ion-text>Opmerking:&nbsp;&nbsp;</ion-text><ion-input
-            placeholder="Artikel Opmerking" [(ngModel)]="description"
-          ></ion-input></ion-row></ion-col
-    ></ion-row>
+    <ion-row><ion-col><ion-row class="center"><ion-text>Opmerking:&nbsp;&nbsp;</ion-text><ion-input
+            placeholder="Artikel Opmerking" [(ngModel)]="description"></ion-input></ion-row></ion-col></ion-row>
     <ion-row>
       <ion-col>
         <ion-row class="center">
@@ -58,7 +53,7 @@
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-button color="danger"  (click)="handleDeleteClick($event)">Delete</ion-button>
+        <ion-button color="danger" (click)="handleDeleteClick($event)">Delete</ion-button>
       </ion-col>
 
       <ion-col>
@@ -68,9 +63,22 @@
       <ion-col>
         <ion-button color="secondary" (click)="handleSearchClick($event)">Zoeken</ion-button>
       </ion-col>
-      <ion-col>
-        <ion-button color="tertiary">Print</ion-button>
-      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-row class="center">
+        <ion-col>
+          <ion-text>Printer:&nbsp;&nbsp;</ion-text>
+        </ion-col>
+        <ion-col>
+          <ion-select [(ngModel)]="printer" aria-label="printer" placeholder="Select printer">
+            <ion-select-option value="Printer-1">Printer-1</ion-select-option>
+            <ion-select-option value="Printer-2">Printer-2</ion-select-option>
+          </ion-select>
+        </ion-col>
+        <ion-col>
+          <ion-button color="tertiary" (click)="handlePrintClick()">Print</ion-button>
+        </ion-col>
+      </ion-row>
     </ion-row>
   </ion-grid>
   <ion-content>
@@ -89,7 +97,7 @@
         <ion-col>{{row.quantity}}</ion-col>
         <ion-col>{{row.rate}}</ion-col>
         <ion-col>{{row.total}}</ion-col>
-        </ion-row>
+      </ion-row>
     </ion-grid>
   </ion-content>
 </ion-content>
