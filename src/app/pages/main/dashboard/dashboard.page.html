@@ -4,8 +4,8 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-grid>
+<ion-content [fullscreen]="true" [style.--background]="scanning ? '#00000000' : ''">
+  <ion-grid *ngIf="!scanning">
     <ion-row>
       <ion-col>
         <ion-row class="center m-b-5">
@@ -81,7 +81,7 @@
       </ion-row>
     </ion-row>
   </ion-grid>
-  <ion-content>
+  <ion-content *ngIf="!scanning">
     <ion-grid>
       <!-- Table Header -->
       <ion-row class="header-row">
@@ -100,4 +100,12 @@
       </ion-row>
     </ion-grid>
   </ion-content>
+  <ion-row class="scan-stop-btn" *ngIf="scanning">
+    <ion-col class="ion-no-padding">
+      <ion-button color="danger" expand="block" (click)="stop_camera()"
+        >STOP</ion-button
+      >
+    </ion-col>
+  </ion-row>
+  <div class="scan-box" *ngIf="scanning"></div>
 </ion-content>

@@ -8,6 +8,7 @@ import { Store } from '@ngrx/store';
 import { AlertController, LoadingController, NavController } from '@ionic/angular';
 import { setProduct } from 'src/app/store/production/actions';
 import { ArrayOfOrderLine, initializeOrder, Order, OrderLine } from 'src/app/models/Order';
+import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 
 @Component({
   selector: 'app-dashboard',
@@ -32,6 +33,7 @@ export class DashboardPage implements OnInit, OnDestroy {
   informationEmployee: Employee;
   index: number;
   selectedIndexes: number[];
+  scanning: boolean;
 
 
   constructor(
@@ -48,6 +50,7 @@ export class DashboardPage implements OnInit, OnDestroy {
     this.index = 0;
     this.selectedIndexes = [];
     this.printer = "Printer-1";
+    this.scanning = false;
     // this.product$ = store.select('product');
   }
 
@@ -76,8 +79,54 @@ export class DashboardPage implements OnInit, OnDestroy {
     this.productSub.unsubscribe();
   }
 
-  handleScanClick(event) {
-    this.navController.navigateForward('/barscan');
+  async handleScanClick(event) {
+    //this.navController.navigateForward('/barscan');
+
+    const allowed = await this.check_camera_permission();
+    console.log('Scan allow', allowed);
+
+    if (allowed) {
+      this.scanning = true;
+      BarcodeScanner.hideBackground();
+
+      const result = await BarcodeScanner.startScan();
+
+      if (result.hasContent) {
+        this.scanning = false;
+        this.artcode = result.content;
+
+        this.handleSearchClick(null);
+      } else {
+        console.log('Scan not succesfull!');
+      }
+    } else {
+      console.log('Camera permission not allowed!');
+
+      const alert = await this.alertController.create({
+        header: "Erorr",
+        message: "Camera permission not allowed!",
+        buttons: ['OK'],
+      });
+      await alert.present();
+    }
+  }
+
+  stop_camera() {
+    BarcodeScanner.stopScan();
+    this.scanning = false;
+  }
+
+  async check_camera_permission() {
+    // eslint-disable-next-line no-async-promise-executor
+    return new Promise(async (resolve, reject) => {
+      const status = await BarcodeScanner.checkPermission({ force: true });
+      if (status.granted) {
+        resolve(true);
+      } else if (status.denied) {
+        BarcodeScanner.openAppSettings();
+        resolve(false);
+      }
+    });
   }
 
   async handleSearchClick(event) {
