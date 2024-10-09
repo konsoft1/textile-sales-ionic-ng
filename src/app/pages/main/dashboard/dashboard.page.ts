@@ -8,7 +8,8 @@ import { Store } from '@ngrx/store';
 import { AlertController, LoadingController, NavController } from '@ionic/angular';
 import { setProduct } from 'src/app/store/production/actions';
 import { ArrayOfOrderLine, initializeOrder, Order, OrderLine } from 'src/app/models/Order';
-import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
+//import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
+import { BarcodeFormat, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 
 @Component({
   selector: 'app-dashboard',
@@ -82,7 +83,14 @@ export class DashboardPage implements OnInit, OnDestroy {
   async handleScanClick(event) {
     //this.navController.navigateForward('/barscan');
 
-    const allowed = await this.check_camera_permission();
+    //this.scanning = true;
+    const { barcodes } = await BarcodeScanner.scan({
+      formats: [BarcodeFormat.Codabar],
+    });
+    this.artcode = barcodes[0].displayValue;
+    //this.scanning = false;
+
+    /* const allowed = await this.check_camera_permission();
     console.log('Scan allow', allowed);
 
     if (allowed) {
@@ -108,15 +116,15 @@ export class DashboardPage implements OnInit, OnDestroy {
         buttons: ['OK'],
       });
       await alert.present();
-    }
+    } */
   }
 
   stop_camera() {
-    BarcodeScanner.stopScan();
+    //BarcodeScanner.stopScan();
     this.scanning = false;
   }
 
-  async check_camera_permission() {
+  /* async check_camera_permission() {
     // eslint-disable-next-line no-async-promise-executor
     return new Promise(async (resolve, reject) => {
       const status = await BarcodeScanner.checkPermission({ force: true });
@@ -127,7 +135,7 @@ export class DashboardPage implements OnInit, OnDestroy {
         resolve(false);
       }
     });
-  }
+  } */
 
   async handleSearchClick(event) {
     if (this.artcode === '') {

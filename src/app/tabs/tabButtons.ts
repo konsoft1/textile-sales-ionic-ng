@@ -9,6 +9,10 @@ export const tabButtons =
         'tab': 'login',
         'icon': 'lock-open',
         'label': 'Login',
+    }, {
+        'tab': 'exit',
+        'icon': 'log-out',
+        'label': 'Exit App',
     }],
     '/logout': [{
         'tab': 'login',
