@@ -11,8 +11,8 @@ const routes: Routes = [
   },
   {
     path: '',
-    // loadChildren: () => import('./pages/main/dashboard/dashboard.module').then(m => m.DashboardPageModule),
-    loadChildren: () => import('./pages/main/main.module').then(m => m.MainModule),
+     loadChildren: () => import('./pages/main/dashboard/dashboard.module').then(m => m.DashboardPageModule),
+    //loadChildren: () => import('./pages/main/main.module').then(m => m.MainModule),
     // canActivate: [AuthGuard] // Secure all child pages
   },
   {

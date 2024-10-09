@@ -84,10 +84,9 @@ export class DashboardPage implements OnInit, OnDestroy {
     //this.navController.navigateForward('/barscan');
 
     //this.scanning = true;
-    const { barcodes } = await BarcodeScanner.scan({
-      formats: [BarcodeFormat.Codabar],
-    });
+    const { barcodes } = await BarcodeScanner.scan();
     this.artcode = barcodes[0].displayValue;
+    this.handleSearchClick(null);
     //this.scanning = false;
 
     /* const allowed = await this.check_camera_permission();

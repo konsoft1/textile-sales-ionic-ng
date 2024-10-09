@@ -7,22 +7,31 @@
 <ion-content [fullscreen]="true" [style.--background]="scanning ? '#00000000' : ''">
   <ion-grid *ngIf="!scanning">
     <ion-row>
-      <ion-col>
+      <ion-col size="8">
         <ion-row class="center m-b-5">
-          <ion-text>Artcode:&nbsp;&nbsp;</ion-text>
+          <ion-text>ArtCo:&nbsp;&nbsp;</ion-text>
           <ion-input placeholder="Enter Artikelcode" [(ngModel)]="artcode"></ion-input>
+        </ion-row>
+        <ion-row class="center">
+          <ion-text>{{ scanresult }}</ion-text>
         </ion-row>
         <ion-row class="center">
           <ion-text>Label:&nbsp;&nbsp;</ion-text>
           <ion-input placeholder="Enter label" [(ngModel)]="label"></ion-input>
         </ion-row>
       </ion-col>
-      <ion-col class="center">
-        <ion-button id="scan-btn" shape="round" color="danger" (click)="handleScanClick($event)">SCAN</ion-button>
+      <ion-col size="4" class="left">
+        <ion-button id="scan-btn" shape="round" color="tertiary" (click)="handleScanClick($event)">SCAN</ion-button>
       </ion-col>
     </ion-row>
-    <ion-row><ion-col><ion-row class="center"><ion-text>Opmerking:&nbsp;&nbsp;</ion-text><ion-input
-            placeholder="Artikel Opmerking" [(ngModel)]="description"></ion-input></ion-row></ion-col></ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-row class="center">
+          <ion-text>Opmer:&nbsp;&nbsp;</ion-text>
+          <ion-input placeholder="Artikel Opmerking" [(ngModel)]="description"></ion-input>
+        </ion-row>
+      </ion-col>
+    </ion-row>
     <ion-row>
       <ion-col>
         <ion-row class="center">
@@ -37,6 +46,8 @@
         </ion-row>
       </ion-col>
     </ion-row>
+
+
     <ion-row>
       <ion-col>
         <ion-row class="center">
@@ -46,22 +57,28 @@
       </ion-col>
       <ion-col>
         <ion-row class="center">
+          <ion-text>Stuks:&nbsp;&nbsp;</ion-text>
           <ion-input class="m-r-5" value="1"></ion-input>
-          <ion-button color="success" (click)="handleAddClick($event)">Add</ion-button>
         </ion-row>
       </ion-col>
     </ion-row>
-    <ion-row>
-      <ion-col>
-        <ion-button color="danger" (click)="handleDeleteClick($event)">Delete</ion-button>
-      </ion-col>
 
+    <ion-row class="ion-text-center">
       <ion-col>
-        <ion-button color="tertiary" (click)="clearFields()" aria-label="Clear selected items">Clear</ion-button>
+        <ion-button class="ctrl-btn" color="tertiary" (click)="clearFields()"
+          aria-label="Clear selected items">Clear</ion-button>
       </ion-col>
-
       <ion-col>
-        <ion-button color="secondary" (click)="handleSearchClick($event)">Zoeken</ion-button>
+          <ion-button class="ctrl-btn" color="success" (click)="handleAddClick($event)">Add</ion-button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="ion-text-center">
+      <ion-col>
+        <ion-button class="ctrl-btn" color="danger" (click)="handleDeleteClick($event)">Del</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button class="ctrl-btn" color="secondary" (click)="handleSearchClick($event)">Zoeken</ion-button>
       </ion-col>
     </ion-row>
     <ion-row>
@@ -76,18 +93,18 @@
           </ion-select>
         </ion-col>
         <ion-col>
-          <ion-button color="tertiary" (click)="handlePrintClick()">Print</ion-button>
+          <ion-button id="print-btn" color="success" (click)="handlePrintClick()">Print bill</ion-button>
         </ion-col>
       </ion-row>
     </ion-row>
   </ion-grid>
-  <ion-content *ngIf="!scanning">
+  <ion-content class="ion-text-center" *ngIf="!scanning">
     <ion-grid>
       <!-- Table Header -->
       <ion-row class="header-row">
-        <ion-col>Article</ion-col>
+        <ion-col>Artcode</ion-col>
         <ion-col>Quantity</ion-col>
-        <ion-col>Rate</ion-col>
+        <ion-col>Prijs</ion-col>
         <ion-col>Total</ion-col>
       </ion-row>
 
@@ -102,9 +119,7 @@
   </ion-content>
   <ion-row class="scan-stop-btn" *ngIf="scanning">
     <ion-col class="ion-no-padding">
-      <ion-button color="danger" expand="block" (click)="stop_camera()"
-        >STOP</ion-button
-      >
+      <ion-button color="danger" expand="block" (click)="stop_camera()">STOP</ion-button>
     </ion-col>
   </ion-row>
   <div class="scan-box" *ngIf="scanning"></div>
