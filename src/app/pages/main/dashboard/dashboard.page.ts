@@ -29,12 +29,14 @@ export class DashboardPage implements OnInit, OnDestroy {
   price: string;
   newprice: string;
   quantity: string;
+  pieces: string;
   printer: string;
   rows: any[];
   informationEmployee: Employee;
   index: number;
   selectedIndexes: number[];
   scanning: boolean;
+  total_price: number;
 
 
   constructor(
@@ -50,8 +52,10 @@ export class DashboardPage implements OnInit, OnDestroy {
     this.rows = [];
     this.index = 0;
     this.selectedIndexes = [];
+    this.pieces = "1";
     this.printer = "Printer-1";
     this.scanning = false;
+    this.total_price = 0;
     // this.product$ = store.select('product');
   }
 
@@ -62,7 +66,18 @@ export class DashboardPage implements OnInit, OnDestroy {
     this.price = "";
     this.newprice = "";
     this.quantity = "";
+    this.pieces = "1";
     this.product = initializeProduct();
+  }
+
+  ionViewWillEnter() {
+    this.clearFields();
+      
+    this.products = [];
+    this.rows = [];
+    this.index = 0;
+    this.selectedIndexes = [];
+    this.total_price = 0;
   }
 
   ngOnInit() {
@@ -200,16 +215,20 @@ export class DashboardPage implements OnInit, OnDestroy {
       }
       const price = parseFloat(this.product.prijs);
       const newprice = parseFloat(this.product.NewPrijs);
-      const rate = (!newprice || newprice == 0) ? price : newprice;
+      const rate = (!newprice || newprice == 0) || new Date(this.product.EndDateTime.replace(' ', 'T')) < new Date() ? price : newprice;
       const total = rate * quantity;
+      const pieces = parseFloat(this.pieces);
       this.rows.push({
         // id: this.index++,
         article: artcode.toString(),
         quantity: quantity.toString(),
+        oldprice: price,
         rate: rate.toString(),
+        pieces: pieces,
         total: total.toString(),
         class: 'data-row',
       });
+      this.total_price += total;
       this.intializateProduct();
     }
 
@@ -258,6 +277,7 @@ export class DashboardPage implements OnInit, OnDestroy {
     this.price = '';
     this.newprice = '';
     this.quantity = '';
+    this.pieces = '1';
   }
 
   handleDeleteClick(event) {
@@ -270,6 +290,7 @@ export class DashboardPage implements OnInit, OnDestroy {
     console.log(this.rows);
 
     this.selectedIndexes = [];
+    this.total_price = 0;
   }
 
   handlePrintClick() {
@@ -279,10 +300,11 @@ export class DashboardPage implements OnInit, OnDestroy {
     let cnt = 0;
 
     order.orderLines.OrderLine = this.products.map((product: Product, idx: number): OrderLine => {
+      product.prijs = this.rows[idx].rate;
       const orderline: OrderLine = {
         product: product,
         quantity: this.rows[idx].quantity,
-        pieces: this.rows[idx].rate,
+        pieces: this.rows[idx].pieces,
         total: this.rows[idx].total,
       };
 
@@ -300,6 +322,14 @@ export class DashboardPage implements OnInit, OnDestroy {
 
     this.dataService.testPrint(order).subscribe(data => {
       console.log('print data: ', data);
+
+      this.clearFields();
+      
+      this.products = [];
+      this.rows = [];
+      this.index = 0;
+      this.selectedIndexes = [];
+      this.total_price = 0;
     }, (error) => {
       console.log('print error: ', error);
     });

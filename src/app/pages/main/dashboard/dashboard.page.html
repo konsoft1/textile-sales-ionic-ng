@@ -58,7 +58,7 @@
       <ion-col>
         <ion-row class="center">
           <ion-text>Stuks:&nbsp;&nbsp;</ion-text>
-          <ion-input class="m-r-5" value="1"></ion-input>
+          <ion-input class="m-r-5" value="1" [(ngModel)]="pieces"></ion-input>
         </ion-row>
       </ion-col>
     </ion-row>
@@ -105,15 +105,22 @@
         <ion-col>Artcode</ion-col>
         <ion-col>Quantity</ion-col>
         <ion-col>Prijs</ion-col>
+        <ion-col>Pc</ion-col>
         <ion-col>Total</ion-col>
       </ion-row>
 
       <!-- Table Data -->
-      <ion-row class={{row.class}} *ngFor="let row of rows; let id = index" (click)="handleRowClick(id)">
+      <ion-row class={{row.class}} *ngFor="let row of rows.slice().reverse(); let id = index" (click)="handleRowClick(id)">
         <ion-col>{{row.article}}</ion-col>
         <ion-col>{{row.quantity}}</ion-col>
         <ion-col>{{row.rate}}</ion-col>
+        <ion-col>{{row.pieces}}</ion-col>
         <ion-col>{{row.total}}</ion-col>
+      </ion-row>
+
+      <ion-row class="ion-float-end total-price" *ngIf="rows.length > 0">
+        <ion-col>Total: </ion-col>
+        <ion-col>{{total_price}}</ion-col>
       </ion-row>
     </ion-grid>
   </ion-content>
