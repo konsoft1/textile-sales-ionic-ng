@@ -44,4 +44,20 @@ export class DataService {
       })
     );
   }
+  
+  getOrdersForSaleman(userID) {
+    return this.client.call('GetOrdersForSaleman', { salemanId: userID }).pipe(
+      map(data => data.result.GetOrdersForSalemanResult.Order),
+    );
+  }
+
+  printDublicate(order: Order) {
+    return this.client.call('PrintDublicate', {
+      order: order
+    }).pipe(
+      map(data => {
+        console.log('data: ', data);
+      })
+    );
+  }
 }

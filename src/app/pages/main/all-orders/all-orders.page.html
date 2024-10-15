@@ -9,14 +9,20 @@
       <ion-col>
         <ion-row class="center">
           <ion-text>Verk ID:&nbsp;&nbsp;</ion-text>
-          <ion-input placeholder="Verkoper nummer"></ion-input>
-          <ion-button color="danger">Search</ion-button>
+          <ion-input placeholder="Verkoper nummer" [(ngModel)]="salesmanId"></ion-input>
+          <ion-button color="danger" (click)="handleSearchClick()">Search</ion-button>
         </ion-row>
       </ion-col>
 
     </ion-row>
-    <ion-row><ion-col><ion-row class="center"><ion-text>Verkoper:&nbsp;&nbsp;</ion-text><ion-input
-            placeholder="Display Verkoper full name"></ion-input></ion-row></ion-col></ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-row class="center">
+          <ion-text>Verkoper:&nbsp;&nbsp;</ion-text>
+          <ion-input placeholder="Display Verkoper full name" [(ngModel)]="salesmanName"></ion-input>
+        </ion-row>
+      </ion-col>
+    </ion-row>
   </ion-grid>
   <ion-content>
     <ion-grid>
@@ -29,11 +35,17 @@
       </ion-row>
 
       <!-- Table Data -->
-      <ion-row class="data-row">
-        <ion-col>Knv000001982</ion-col>
-        <ion-col>31/01/24</ion-col>
-        <ion-col>2</ion-col>
-        <ion-col>40.00</ion-col>
+      <ion-row class="data-row" [ngClass]="{'selected': selectedRow === id, 'odd': id % 2 == 1}" *ngFor="let row of rows; let id = index" (click)="selectRow(id)">
+        <ion-col>{{row.barcode}}</ion-col>
+        <ion-col>{{row.dateTime}}</ion-col>
+        <ion-col>{{row.quantity}}</ion-col>
+        <ion-col>{{row.total}}</ion-col>
+      </ion-row>
+
+      <ion-row class="print-btn">
+        <ion-col>
+          <ion-button color="success" expand="block" (click)="handlePrintClick()">"bill duplicate" PRINT</ion-button>
+        </ion-col>
       </ion-row>
     </ion-grid>
   </ion-content>
