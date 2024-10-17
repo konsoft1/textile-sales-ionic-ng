@@ -110,17 +110,17 @@
       </ion-row>
 
       <!-- Table Data -->
-      <ion-row class={{row.class}} *ngFor="let row of rows.slice().reverse(); let id = index" (click)="handleRowClick(id)">
+      <ion-row [ngClass]="{'odd': id % 2 == 1}" class={{row.class}} *ngFor="let row of rows.slice().reverse(); let id = index" (click)="handleRowClick(rows.length - id - 1)">
         <ion-col>{{row.article}}</ion-col>
         <ion-col>{{row.quantity}}</ion-col>
         <ion-col>{{row.rate}}</ion-col>
         <ion-col>{{row.pieces}}</ion-col>
-        <ion-col>{{row.total}}</ion-col>
+        <ion-col>{{(row.total*1).toFiexed(2)}}</ion-col>
       </ion-row>
 
       <ion-row class="ion-float-end total-price" *ngIf="rows.length > 0">
         <ion-col>Total: </ion-col>
-        <ion-col>{{total_price}}</ion-col>
+        <ion-col>{{total_price.toFiexed(2)}}</ion-col>
       </ion-row>
     </ion-grid>
   </ion-content>

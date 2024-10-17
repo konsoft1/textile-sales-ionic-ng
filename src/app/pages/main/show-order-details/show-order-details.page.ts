@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
+import { filter } from 'rxjs';
 import { Order } from 'src/app/models/Order';
 import { DataService } from 'src/app/services/data/data.service';
 
@@ -11,9 +12,8 @@ import { DataService } from 'src/app/services/data/data.service';
 })
 export class ShowOrderDetailsPage implements OnInit {
 
-  order: Order;
-
-  selectedRow: number | null;
+  order: Order | null;
+  total_price: number;
 
   constructor(
     private loadingController: LoadingController,
@@ -22,15 +22,24 @@ export class ShowOrderDetailsPage implements OnInit {
     private route: ActivatedRoute,
     private alertController: AlertController,
   ) {
-    this.selectedRow = null;
+    this.order = null;
+    this.total_price = 0;
   }
 
   ngOnInit() {
-    const navigation = this.router.getCurrentNavigation();
-    if (navigation?.extras.state) {
-      this.order = navigation.extras.state['order'];
-      this.order.printer = 'Printer-1';
-    }
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {
+      const navigation = this.router.getCurrentNavigation();
+      if (navigation?.extras.state) {
+        this.order = navigation.extras.state['order'];
+        this.order.employee = navigation.extras.state['employee'];
+        this.order.printer = 'Printer-1';
+  
+        this.total_price = 0;
+        this.order.orderLines.OrderLine.forEach(row => {
+          this.total_price += row.total * 1;
+        });
+      }
+    });
     /* this.route.queryParams.subscribe(params => {
       this.order = params['order'];
       this.order.printer = 'Printer-1';
@@ -39,11 +48,10 @@ export class ShowOrderDetailsPage implements OnInit {
 
   selectRow(index: number): void {
     console.log(index);
-    this.selectedRow = index;
   }
 
   async handlePrintClick() {
-    if (this.selectedRow === null) {
+    if (this.order === null) {
       const alert = await this.alertController.create({
         header: "Erorr",
         message: "Please select order to print.",
@@ -52,15 +60,29 @@ export class ShowOrderDetailsPage implements OnInit {
       await alert.present();
     } else {
       const loading = await this.loadingController.create({
-        message: 'Loading employee information...'
+        message: 'Printing...'
       });
       loading.present();
-      this.dataService.printDublicate(this.order).subscribe(data => {
+      this.dataService.printDublicate(this.order).subscribe(async (data) => {
         console.log('Printed successfully!');
         loading.dismiss();
-      }, (error) => {
+
+        const alert = await this.alertController.create({
+          header: "Success",
+          message: "Printed successfully!",
+          buttons: ['OK'],
+        });
+        await alert.present();
+      }, async (error) => {
         console.log('Print failed.');
         loading.dismiss();
+        
+        const alert = await this.alertController.create({
+          header: "Erorr",
+          message: "Print failed.",
+          buttons: ['OK'],
+        });
+        await alert.present();
       });
     }
   }

@@ -235,17 +235,14 @@ export class DashboardPage implements OnInit, OnDestroy {
   }
 
   handleRowClick(id) {
-    console.log(id)
-      ;
-    let pos = this.selectedIndexes.indexOf(id)
-      ;
+    console.log(id);
+    let pos = this.selectedIndexes.indexOf(id);
     if (pos !== -1) {
       this.selectedIndexes.splice(pos, 1);
       // console.log(pos);
       this.rows[id].class = 'data-row';
     } else {
-      this.selectedIndexes.push(id)
-        ;
+      this.selectedIndexes.push(id);
       this.rows[id].class = 'data-row selected';
     }
     // console.log(this.selectedIndexes);
@@ -284,16 +281,16 @@ export class DashboardPage implements OnInit, OnDestroy {
     const sortedIndexes = this.selectedIndexes.sort((a, b) => b - a);
 
     sortedIndexes.forEach(index => {
+      this.total_price -= this.rows[index].total;
       this.rows.splice(index, 1);
     })
 
     console.log(this.rows);
 
     this.selectedIndexes = [];
-    this.total_price = 0;
   }
 
-  handlePrintClick() {
+  async handlePrintClick() {
     let order: Order = initializeOrder();
 
     let total = 0;
@@ -320,8 +317,20 @@ export class DashboardPage implements OnInit, OnDestroy {
     order.dateTime = new Date().toISOString();
     order.printer = this.printer;
 
-    this.dataService.testPrint(order).subscribe(data => {
+    const loading = await this.loadingController.create({
+      message: 'Printing...'
+    });
+    loading.present();
+    this.dataService.testPrint(order).subscribe(async data => {
       console.log('print data: ', data);
+      loading.dismiss();
+
+      const alert = await this.alertController.create({
+        header: "Success",
+        message: "Printed successfully!",
+        buttons: ['OK'],
+      });
+      await alert.present();
 
       this.clearFields();
       
@@ -330,8 +339,16 @@ export class DashboardPage implements OnInit, OnDestroy {
       this.index = 0;
       this.selectedIndexes = [];
       this.total_price = 0;
-    }, (error) => {
+    }, async (error) => {
       console.log('print error: ', error);
+      loading.dismiss();
+
+      const alert = await this.alertController.create({
+        header: "Erorr",
+        message: "Print failed.",
+        buttons: ['OK'],
+      });
+      await alert.present();
     });
   }
 

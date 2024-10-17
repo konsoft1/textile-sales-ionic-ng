@@ -24,6 +24,9 @@ export class TabsPage implements OnInit {
       if (event instanceof NavigationEnd) {
         console.log(event.url);
         this.currentTab = tabButtons[event.url];
+        if (event.url === '/logout') {
+          window.location.reload();
+        }
       }
     })
   }

@@ -3,6 +3,7 @@ import { LoadingController, AlertController, IonInput, NavController } from "@io
 import { DataService } from "../../../services/data/data.service";
 import { Order } from 'src/app/models/Order';
 import { Router } from '@angular/router';
+import { Employee } from 'src/app/models/Employee';
 
 @Component({
   selector: 'app-all-orders',
@@ -12,11 +13,15 @@ import { Router } from '@angular/router';
 export class AllOrdersPage implements OnInit {
 
   today: string;
+  
+  selectedRow: number | null;
 
   salesmanId: string;
   salesmanName: string;
+  employee: Employee | null;
   rows: any[];
   orders: Order[];
+  total_price: number;
 
   constructor(
     private dataService: DataService,
@@ -26,25 +31,33 @@ export class AllOrdersPage implements OnInit {
     private navController: NavController,
   ) {
     this.today = new Date().toLocaleDateString('en-GB');
+    this.selectedRow = null;
 
     this.salesmanId = '';
     this.salesmanName = '';
+    this.employee = null;
     this.rows = [];
     this.orders = [];
+    this.total_price = 0;
+    this.selectedRow = null;
   }
 
   ngOnInit() {
   }
 
   ionViewWillEnter() {
-    this.salesmanId = '';
+    /* this.salesmanId = '';
     this.salesmanName = '';
+    this.employee = null;
     this.rows = [];
     this.orders = [];
+    this.total_price = 0;
+    this.selectedRow = null; */
   }
 
   selectRow(index: number): void {
     console.log(index);
+    this.selectedRow = index;
     /* this.navController.navigateForward('/details', {
       queryParams: {
         order: this.orders[index]
@@ -52,7 +65,8 @@ export class AllOrdersPage implements OnInit {
     }); */
     this.router.navigate(['/details'], {
       state: {
-        order: this.orders[index]
+        order: this.orders[index],
+        employee: this.employee
       }
     })
   }
@@ -67,6 +81,7 @@ export class AllOrdersPage implements OnInit {
       await alert.present();
     } else {
       this.salesmanName = '';
+      this.employee = null;
       this.rows = [];
       this.dataService.clientState().subscribe(async (ready) => {
         if (ready) {
@@ -97,6 +112,7 @@ export class AllOrdersPage implements OnInit {
     return new Promise((resolve, reject) => {
       this.dataService.getEmployee(userID).subscribe(data => {
         this.salesmanName = data.Name;
+        this.employee = data;
         loading.dismiss();
         resolve(true);
       }, (error) => {
@@ -115,6 +131,7 @@ export class AllOrdersPage implements OnInit {
     return new Promise((resolve, reject) => {
       this.dataService.getOrdersForSaleman(userID).subscribe((data: [any]) => {
         this.orders = data;
+        this.total_price = 0;
         this.rows = data.map((order: any) => {
           order.quantity = 0;
           order.total = 0;
@@ -123,6 +140,7 @@ export class AllOrdersPage implements OnInit {
               order.quantity += token.quantity * 1;
               order.total += token.total * 1;
             }
+          this.total_price += order.total;
           return order;
         });
         loading.dismiss();

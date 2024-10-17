@@ -1,6 +1,6 @@
 <ion-header collapse="fade" [translucent]="true">
   <ion-toolbar color="dark">
-    <ion-title color="light">Oredr: {{order.barcode}} </ion-title>
+    <ion-title color="light">Oredr: {{order !== null ? order.barcode : ''}} </ion-title>
   </ion-toolbar> </ion-header>
 
   <ion-content [fullscreen]="true">
@@ -15,16 +15,22 @@
       </ion-row>
 
       <!-- Table Data -->
-      <ion-row class="data-row" [ngClass]="{'selected': selectedRow === id, 'odd': id % 2 == 1}" *ngFor="let row of order.orderLines.OrderLine; let id = index" (click)="selectRow(id)">
+      <ion-row class="data-row" [ngClass]="{'odd': id % 2 == 1}" *ngFor="let row of (order !== null ? order.orderLines.OrderLine : []); let id = index" (click)="selectRow(id)">
         <ion-col>{{row.product.ART_CODE}}</ion-col>
         <ion-col>{{row.product.prijs}}</ion-col>
         <ion-col>{{row.quantity}}</ion-col>
         <ion-col>{{row.total}}</ion-col>
       </ion-row>
+
+      <ion-row class="total-price" *ngIf="order !== null && order.orderLines.OrderLine.length > 0">
+        <ion-col></ion-col>
+        <ion-col size="auto">Total: </ion-col>
+        <ion-col size="auto">{{total_price}}</ion-col>
+      </ion-row>
       
-      <ion-row class="print-btn">
+      <ion-row>
         <ion-col>
-          <ion-button color="success" expand="block" (click)="handlePrintClick()">"bill duplicate" PRINT</ion-button>
+          <ion-button class="print-btn" color="success" expand="block" (click)="handlePrintClick()">"bill duplicate" PRINT</ion-button>
         </ion-col>
       </ion-row>
     </ion-grid>
