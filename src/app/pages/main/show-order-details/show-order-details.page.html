@@ -1,6 +1,6 @@
 <ion-header collapse="fade" [translucent]="true">
   <ion-toolbar color="dark">
-    <ion-title color="light">Oredr: [ID] </ion-title>
+    <ion-title color="light">Oredr: {{order.barcode}} </ion-title>
   </ion-toolbar> </ion-header>
 
   <ion-content [fullscreen]="true">
@@ -15,11 +15,17 @@
       </ion-row>
 
       <!-- Table Data -->
-      <ion-row class="data-row">
-        <ion-col>Knv000001982</ion-col>
-        <ion-col>12.9</ion-col>
-        <ion-col>2</ion-col>
-        <ion-col>40.00</ion-col>
+      <ion-row class="data-row" [ngClass]="{'selected': selectedRow === id, 'odd': id % 2 == 1}" *ngFor="let row of order.orderLines.OrderLine; let id = index" (click)="selectRow(id)">
+        <ion-col>{{row.product.ART_CODE}}</ion-col>
+        <ion-col>{{row.product.prijs}}</ion-col>
+        <ion-col>{{row.quantity}}</ion-col>
+        <ion-col>{{row.total}}</ion-col>
+      </ion-row>
+      
+      <ion-row class="print-btn">
+        <ion-col>
+          <ion-button color="success" expand="block" (click)="handlePrintClick()">"bill duplicate" PRINT</ion-button>
+        </ion-col>
       </ion-row>
     </ion-grid>
   </ion-content>

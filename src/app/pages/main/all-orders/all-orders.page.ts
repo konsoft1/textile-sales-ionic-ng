@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { LoadingController, AlertController, IonInput } from "@ionic/angular";
+import { LoadingController, AlertController, IonInput, NavController } from "@ionic/angular";
 import { DataService } from "../../../services/data/data.service";
 import { Order } from 'src/app/models/Order';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-all-orders',
@@ -10,23 +11,26 @@ import { Order } from 'src/app/models/Order';
 })
 export class AllOrdersPage implements OnInit {
 
+  today: string;
+
   salesmanId: string;
   salesmanName: string;
   rows: any[];
   orders: Order[];
 
-  selectedRow: number | null;
-
   constructor(
     private dataService: DataService,
     private loadingController: LoadingController,
+    private router: Router,
     private alertController: AlertController,
+    private navController: NavController,
   ) {
+    this.today = new Date().toLocaleDateString('en-GB');
+
     this.salesmanId = '';
     this.salesmanName = '';
     this.rows = [];
-
-    this.selectedRow = null;
+    this.orders = [];
   }
 
   ngOnInit() {
@@ -36,13 +40,21 @@ export class AllOrdersPage implements OnInit {
     this.salesmanId = '';
     this.salesmanName = '';
     this.rows = [];
-
-    this.selectedRow = null;
+    this.orders = [];
   }
 
   selectRow(index: number): void {
     console.log(index);
-    this.selectedRow = index;
+    /* this.navController.navigateForward('/details', {
+      queryParams: {
+        order: this.orders[index]
+      }
+    }); */
+    this.router.navigate(['/details'], {
+      state: {
+        order: this.orders[index]
+      }
+    })
   }
 
   async handleSearchClick() {
@@ -121,23 +133,6 @@ export class AllOrdersPage implements OnInit {
       });
 
     });
-  }
-
-  async handlePrintClick() {
-    if (this.selectedRow === null) {
-      const alert = await this.alertController.create({
-        header: "Erorr",
-        message: "Please select order to print.",
-        buttons: ['OK'],
-      });
-      await alert.present();
-    } else {
-      this.dataService.printDublicate(this.orders[this.selectedRow]).subscribe(data => {
-        console.log('Printed successfully!');
-      }, (error) => {
-        console.log('Print failed.');
-      });
-    }
   }
 
 }

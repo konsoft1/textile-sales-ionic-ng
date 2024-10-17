@@ -1,6 +1,6 @@
 <ion-header collapse="fade" [translucent]="true">
   <ion-toolbar color="dark">
-    <ion-title color="light">Today's order numbers </ion-title>
+    <ion-title color="light">Today's order numbers ({{today}})</ion-title>
   </ion-toolbar> </ion-header>
 
 <ion-content [fullscreen]="true">
@@ -29,24 +29,17 @@
       <!-- Table Header -->
       <ion-row class="header-row">
         <ion-col>Order No</ion-col>
-        <ion-col>Time</ion-col>
         <ion-col>Qty.</ion-col>
         <ion-col>Total</ion-col>
       </ion-row>
 
       <!-- Table Data -->
-      <ion-row class="data-row" [ngClass]="{'selected': selectedRow === id, 'odd': id % 2 == 1}" *ngFor="let row of rows; let id = index" (click)="selectRow(id)">
+      <ion-row class="data-row" [ngClass]="{'odd': id % 2 == 1}" *ngFor="let row of rows; let id = index" (click)="selectRow(id)">
         <ion-col>{{row.barcode}}</ion-col>
-        <ion-col>{{row.dateTime}}</ion-col>
         <ion-col>{{row.quantity}}</ion-col>
         <ion-col>{{row.total}}</ion-col>
       </ion-row>
 
-      <ion-row class="print-btn">
-        <ion-col>
-          <ion-button color="success" expand="block" (click)="handlePrintClick()">"bill duplicate" PRINT</ion-button>
-        </ion-col>
-      </ion-row>
     </ion-grid>
   </ion-content>
 </ion-content>
