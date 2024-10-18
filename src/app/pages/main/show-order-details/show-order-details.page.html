@@ -19,13 +19,13 @@
         <ion-col>{{row.product.ART_CODE}}</ion-col>
         <ion-col>{{row.product.prijs}}</ion-col>
         <ion-col>{{row.quantity}}</ion-col>
-        <ion-col>{{row.total}}</ion-col>
+        <ion-col>{{(row.total*1).toFiexed(2)}}</ion-col>
       </ion-row>
 
       <ion-row class="total-price" *ngIf="order !== null && order.orderLines.OrderLine.length > 0">
         <ion-col></ion-col>
         <ion-col size="auto">Total: </ion-col>
-        <ion-col size="auto">{{total_price}}</ion-col>
+        <ion-col size="auto">{{total_price.toFiexed(2)}}</ion-col>
       </ion-row>
       
       <ion-row>
