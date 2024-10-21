@@ -118,9 +118,10 @@
         <ion-col>{{(row.total*1).toFiexed(2)}}</ion-col>
       </ion-row>
 
-      <ion-row class="ion-float-end total-price" *ngIf="rows.length > 0">
-        <ion-col>Total: </ion-col>
-        <ion-col>{{total_price.toFiexed(2)}}</ion-col>
+      <ion-row class="total-price" *ngIf="rows.length > 0">
+        <ion-col></ion-col>
+        <ion-col size="auto">Total: </ion-col>
+        <ion-col size="auto">{{total_price.toFiexed(2)}}</ion-col>
       </ion-row>
     </ion-grid>
   </ion-content>
